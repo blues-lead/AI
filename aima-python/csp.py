@@ -401,12 +401,12 @@ def mac(csp, var, value, assignment, removals, constraint_propagation=AC3b):
 
 # The search, proper
 
-
+# TODO Find # of backtrackings
 def backtracking_search(csp, select_unassigned_variable=first_unassigned_variable,
                         order_domain_values=unordered_domain_values, inference=no_inference):
     """[Figure 6.5]"""
-
     def backtrack(assignment):
+        #backtrack_count = 0 # my own variable
         if len(assignment) == len(csp.variables):
             return assignment
         var = select_unassigned_variable(assignment, csp)
@@ -416,19 +416,27 @@ def backtracking_search(csp, select_unassigned_variable=first_unassigned_variabl
                 removals = csp.suppose(var, value)
                 if inference(csp, var, value, assignment, removals):
                     result = backtrack(assignment)
+                    #i += 1 # my variable
                     if result is not None:
-                        return result
+                        return result # alkuperäinen
+                        #return result, backtrack_count # my version
                 csp.restore(removals)
+            #else: # my version
+                #backtrack_count += 1 # my version
         csp.unassign(var, assignment)
         return None
 
-    result = backtrack({})
+    result = backtrack({}) # alkuperäinen
+    #cnt, result = backtrack({})
     assert result is None or csp.goal_test(result)
-    return result
+    #breakpoint()
+    #return result, cnt
+    return result # alkuperainen
 
 
 # ______________________________________________________________________________
 # Min-conflicts Hill Climbing search for CSPs
+# TODO the first bounus task in homework
 
 
 def min_conflicts(csp, max_steps=100000):
@@ -725,6 +733,10 @@ def flatten(seqs):
 
 easy1 = '..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
 harder1 = '4173698.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
+helppo = '4.3........175.4.....2..71382....1.79....2..4....96.521..94.52...452.3787....89..'
+vaikee = '..5.........1.8.49..63.4..8......19....8.6...6.1...2........92..4.23....72..4...3'
+keski_vaikee = '....9...6....3.8.56.1...3.495...8....7...49.........21..73..1..5.987.64.4..62.5..'
+erittain_vaikee = '.1..38.6......1.4559..........39.1..65..........16..2....614.....7............8.9'
 
 _R3 = list(range(3))
 _CELL = itertools.count().__next__

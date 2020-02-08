@@ -1,0 +1,4 @@
+*.mdl
+*.txt
+.vscode/
+*.pickle
